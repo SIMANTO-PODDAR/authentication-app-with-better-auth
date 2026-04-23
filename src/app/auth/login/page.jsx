@@ -2,16 +2,12 @@
 import { authClient } from "@/lib/auth-client";
 import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 
-const SignUpPage = () => {
+const LogInPage = () => {
 
     const [loading, setLoading] = useState(false);
-
-    const router = useRouter()
 
     const onSubmit = async (e) => {
         setLoading(true);
@@ -19,23 +15,17 @@ const SignUpPage = () => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const userData = Object.fromEntries(formData.entries());
-        // console.log("Form submitted with:", userData)
 
-        const { data, error } = await authClient.signUp.email({
-            name: userData.name,
+        const { data, error } = await authClient.signIn.email({
             email: userData.email,
             password: userData.password,
-        },
-            {
-                onSuccess: () => {
-                    router.push('/successfullySignUp')
-                }
-            });
+            callbackURL: "/successfullyLogIn",
+        });
 
         if (!data) {
             alert(error.message)
         } else {
-            alert(' Successfully Sign Up ')
+            alert(' Successfully Log In ')
         }
 
         setLoading(false);
@@ -43,26 +33,12 @@ const SignUpPage = () => {
 
     return (
         <div className=" mt-5">
-            <h1 className='text-2xl text-center font-bold'>Sign Up:</h1>
+            <h1 className='text-2xl text-center font-bold'>Log In:</h1>
 
             <div className={`${!loading ? 'flex justify-center' : 'hidden'}`}>
 
                 <Form className="flex w-96 flex-col gap-4 mt-5" onSubmit={onSubmit}>
 
-                    <TextField
-                        isRequired
-                        name="name"
-                        validate={(value) => {
-                            if (value.length < 3) {
-                                return "Name must be at least 3 characters";
-                            }
-                            return null;
-                        }}
-                    >
-                        <Label>Name</Label>
-                        <Input name="name" placeholder="Your Name" />
-                        <FieldError />
-                    </TextField>
 
                     <TextField
                         isRequired
@@ -122,4 +98,4 @@ const SignUpPage = () => {
     );
 };
 
-export default SignUpPage;
+export default LogInPage;
