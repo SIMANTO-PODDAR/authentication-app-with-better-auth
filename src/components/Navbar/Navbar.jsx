@@ -5,36 +5,51 @@ import { authClient } from "@/lib/auth-client";
 
 const Navbar = () => {
 
+    const {
+        data: session
+    } = authClient.useSession()
+
+    const userName = session?.user.name.toUpperCase();
+
     const LogOut = async () => {
-        await authClient.signOut({
-            fetchOptions: {
-                onSuccess: () => {
-                    alert(' Successfully Log Out! ')
+        if (userName) {
+            await authClient.signOut({
+                fetchOptions: {
+                    onSuccess: () => {
+                        alert(' Successfully Log Out!');
+                    },
                 },
-            },
-        });
+            });
+        }
+        else {
+            alert('Log In 1st');
+        }
+
     }
 
     return (
         <div>
-            <div className="flex justify-center items-center mt-5 gap-5">
+            <div className="flex justify-center items-center gap-5 scale-70 sm:scale-100">
                 <Link href='/' className="flex justify-center my-3">
                     <Button className="bg-cyan-300"> Home </Button>
                 </Link>
 
                 <Link href='/auth/signup' className="flex justify-center my-3 ">
-                    <Button className="bg-amber-400/60 text-black"> Sign Up </Button>
+                    <Button className="bg-amber-400/60 "> Sign Up </Button>
                 </Link>
 
                 <Link href='/auth/login' className="flex justify-center my-3">
                     <Button> Log In </Button>
                 </Link>
 
-
                 <Button onClick={LogOut} className="flex justify-center my-3 bg-red-400"> Log Out </Button>
 
-
-                <h1 className="font-bold">Name:</h1>
+                <Link href='/profile' className="font-bold flex items-center ">
+                    <Button className='bg-green-800'>
+                        <span>Profile:</span>
+                        <span className="text-xs"> {userName ? userName : 'N/A'} </span>
+                    </Button>
+                </Link>
 
             </div>
         </div>

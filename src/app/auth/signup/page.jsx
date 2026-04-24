@@ -2,7 +2,6 @@
 import { authClient } from "@/lib/auth-client";
 import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -19,7 +18,6 @@ const SignUpPage = () => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const userData = Object.fromEntries(formData.entries());
-        // console.log("Form submitted with:", userData)
 
         const { data, error } = await authClient.signUp.email({
             name: userData.name,
@@ -28,9 +26,10 @@ const SignUpPage = () => {
         },
             {
                 onSuccess: () => {
-                    router.push('/successfullySignUp')
+                    router.push('/profile')
                 }
-            });
+            }
+        );
 
         if (!data) {
             alert(error.message)
@@ -60,7 +59,7 @@ const SignUpPage = () => {
                         }}
                     >
                         <Label>Name</Label>
-                        <Input name="name" placeholder="Your Name" />
+                        <Input name="name" placeholder="Your Name" autoComplete="name"/>
                         <FieldError />
                     </TextField>
 
@@ -76,7 +75,7 @@ const SignUpPage = () => {
                         }}
                     >
                         <Label>Email</Label>
-                        <Input name="email" placeholder="Your Email" />
+                        <Input name="email" placeholder="Your Email" autoComplete="email" />
                         <FieldError />
                     </TextField>
 
@@ -99,14 +98,14 @@ const SignUpPage = () => {
                         }}
                     >
                         <Label>Password</Label>
-                        <Input name="password" placeholder="Enter your password" />
+                        <Input name="password" placeholder="Enter your password" autoComplete="current-password"/>
                         <Description>Must be at least 8 characters with 1 uppercase and 1 number</Description>
                         <FieldError />
                     </TextField>
                     <div className="flex gap-2">
                         <Button type="submit">
                             <Check />
-                            Submit
+                            Sign Up
                         </Button>
                         <Button type="reset" variant="secondary">
                             Reset

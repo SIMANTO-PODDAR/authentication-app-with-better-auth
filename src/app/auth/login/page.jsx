@@ -7,6 +7,12 @@ import { useState } from "react";
 
 const LogInPage = () => {
 
+    const {
+        data: session
+    } = authClient.useSession()
+
+    const userName = session?.user.name.toUpperCase();
+
     const [loading, setLoading] = useState(false);
 
     const onSubmit = async (e) => {
@@ -16,16 +22,26 @@ const LogInPage = () => {
         const formData = new FormData(e.currentTarget);
         const userData = Object.fromEntries(formData.entries());
 
+        if (userName) {
+            alert(`
+                    ${userName}, You are already logged in!
+                    Please log out before logging in again.
+                `)
+            setLoading(false);
+            return
+        }
+
         const { data, error } = await authClient.signIn.email({
             email: userData.email,
             password: userData.password,
-            callbackURL: "/successfullyLogIn",
+            callbackURL: "/profile",
         });
 
         if (!data) {
             alert(error.message)
-        } else {
-            alert(' Successfully Log In ')
+        }
+        else {
+            alert(`Successfully Log In`)
         }
 
         setLoading(false);
@@ -52,7 +68,7 @@ const LogInPage = () => {
                         }}
                     >
                         <Label>Email</Label>
-                        <Input name="email" placeholder="Your Email" />
+                        <Input name="email" placeholder="Your Email" autoComplete="email" />
                         <FieldError />
                     </TextField>
 
@@ -75,14 +91,14 @@ const LogInPage = () => {
                         }}
                     >
                         <Label>Password</Label>
-                        <Input name="password" placeholder="Enter your password" />
+                        <Input name="password" placeholder="Enter your password" autoComplete="current-password" />
                         <Description>Must be at least 8 characters with 1 uppercase and 1 number</Description>
                         <FieldError />
                     </TextField>
                     <div className="flex gap-2">
                         <Button type="submit">
                             <Check />
-                            Submit
+                            Log In
                         </Button>
                         <Button type="reset" variant="secondary">
                             Reset
