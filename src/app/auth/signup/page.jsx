@@ -4,6 +4,8 @@ import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BarLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 
 const SignUpPage = () => {
@@ -26,15 +28,14 @@ const SignUpPage = () => {
         },
             {
                 onSuccess: () => {
+                    toast.success(' Successfully Sign Up')
                     router.push('/profile')
                 }
             }
         );
 
         if (!data) {
-            alert(error.message)
-        } else {
-            alert(' Successfully Sign Up ')
+            toast.warning(error.message)
         }
 
         setLoading(false);
@@ -59,7 +60,7 @@ const SignUpPage = () => {
                         }}
                     >
                         <Label>Name</Label>
-                        <Input name="name" placeholder="Your Name" autoComplete="name"/>
+                        <Input name="name" placeholder="Your Name" autoComplete="name" />
                         <FieldError />
                     </TextField>
 
@@ -98,7 +99,7 @@ const SignUpPage = () => {
                         }}
                     >
                         <Label>Password</Label>
-                        <Input name="password" placeholder="Enter your password" autoComplete="current-password"/>
+                        <Input name="password" placeholder="Enter your password" autoComplete="current-password" />
                         <Description>Must be at least 8 characters with 1 uppercase and 1 number</Description>
                         <FieldError />
                     </TextField>
@@ -114,8 +115,9 @@ const SignUpPage = () => {
                 </Form>
             </div>
 
-            <div className={`${loading ? 'flex justify-center text-2xl text-center font-bold mt-5' : 'hidden'}`}>
-                <h1>Processing Your Request...</h1>
+            <div className={`${loading ? 'grid justify-center text-2xl text-center font-bold mt-5' : 'hidden'}`}>
+                <h1>Processing Your Request</h1>
+                <BarLoader className="mt-3 w-full" />
             </div>
         </div>
     );

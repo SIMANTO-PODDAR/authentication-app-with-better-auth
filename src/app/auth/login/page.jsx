@@ -2,7 +2,10 @@
 import { authClient } from "@/lib/auth-client";
 import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BarLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 
 const LogInPage = () => {
@@ -15,6 +18,9 @@ const LogInPage = () => {
 
     const [loading, setLoading] = useState(false);
 
+    const router = useRouter()
+
+
     const onSubmit = async (e) => {
         setLoading(true);
 
@@ -23,7 +29,7 @@ const LogInPage = () => {
         const userData = Object.fromEntries(formData.entries());
 
         if (userName) {
-            alert(`
+            toast.error(`
                     ${userName}, You are already logged in!
                     Please log out before logging in again.
                 `)
@@ -33,15 +39,15 @@ const LogInPage = () => {
 
         const { data, error } = await authClient.signIn.email({
             email: userData.email,
-            password: userData.password,
-            callbackURL: "/profile",
+            password: userData.password
         });
 
         if (!data) {
-            alert(error.message)
+            toast.error(error.message)
         }
         else {
-            alert(`Successfully Log In`)
+            toast.success(`Successfully Log In`)
+            router.push('/profile')
         }
 
         setLoading(false);
@@ -107,8 +113,9 @@ const LogInPage = () => {
                 </Form>
             </div>
 
-            <div className={`${loading ? 'flex justify-center text-2xl text-center font-bold mt-5' : 'hidden'}`}>
-                <h1>Processing Your Request...</h1>
+            <div className={`${loading ? 'grid justify-center text-2xl text-center font-bold mt-5' : 'hidden'}`}>
+                <h1>Processing Your Request</h1>
+                <BarLoader />
             </div>
         </div>
     );

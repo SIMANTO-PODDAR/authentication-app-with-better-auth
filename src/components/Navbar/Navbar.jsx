@@ -2,6 +2,8 @@
 import { Button } from "@heroui/react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import { BounceLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
 
@@ -16,13 +18,13 @@ const Navbar = () => {
             await authClient.signOut({
                 fetchOptions: {
                     onSuccess: () => {
-                        alert(' Successfully Log Out!');
+                        toast.success(' Successfully Log Out!');
                     },
                 },
             });
         }
         else {
-            alert('Log In 1st');
+            toast('Log In First!');
         }
 
     }
@@ -45,9 +47,9 @@ const Navbar = () => {
                 <Button onClick={LogOut} className="flex justify-center my-3 bg-red-400"> Log Out </Button>
 
                 <Link href='/profile' className="font-bold flex items-center ">
-                    <Button className='bg-green-800'>
+                    <Button className='bg-green-800 max-w-[137px]'>
                         <span>Profile:</span>
-                        <span className="text-xs"> {userName ? userName : 'N/A'} </span>
+                        <span className="text-xs"> {userName ? userName : <Loader />} </span>
                     </Button>
                 </Link>
 
@@ -57,3 +59,14 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const Loader = () => {
+    return (
+        <div>
+            <BounceLoader
+                color="#0485f7"
+                size={20}
+            />
+        </div>
+    );
+};
