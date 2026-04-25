@@ -1,6 +1,6 @@
 import { createAuthClient } from "better-auth/react"
 export const authClient = createAuthClient({
-    baseURL: "https://authentication-app-with-better-auth.vercel.app/"
+    baseURL: "authentication-app-with-bet-git-c70644-simanto-poddars-projects.vercel.app"
     // baseURL: "http://localhost:3000"
 })
 
