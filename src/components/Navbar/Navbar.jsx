@@ -47,7 +47,7 @@ const Navbar = () => {
                 <Button onClick={LogOut} className="flex justify-center my-3 bg-red-400"> Log Out </Button>
 
                 <Link href='/profile' className="font-bold flex items-center ">
-                    <Button className='bg-green-800 max-w-[137px]'>
+                    <Button className='bg-green-800 max-w-35'>
                         <span>Profile:</span>
                         <span className="text-xs"> {userName ? userName : <Loader />} </span>
                     </Button>
