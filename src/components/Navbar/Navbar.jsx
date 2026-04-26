@@ -14,7 +14,7 @@ const Navbar = () => {
     const userName = session?.user.name.toUpperCase();
 
     const LogOut = async () => {
-        if (userName) {
+        if (userName == true) {
             await authClient.signOut({
                 fetchOptions: {
                     onSuccess: () => {
