@@ -11,7 +11,7 @@ const Navbar = () => {
         data: session
     } = authClient.useSession()
 
-    const userName = session?.user.name.toUpperCase();
+    const userName = session?.user?.name?.toUpperCase();
 
     const LogOut = async () => {
         if (userName == true) {
